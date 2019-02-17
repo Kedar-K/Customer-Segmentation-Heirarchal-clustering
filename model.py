@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import copy
 import csv
+import pickle
 
 # Importing the dataset
 dataset = pd.read_csv("Mall_Customers.csv")
@@ -39,6 +40,14 @@ plt.show()
 from sklearn.cluster import AgglomerativeClustering
 
 hc = AgglomerativeClustering(n_clusters=5, affinity="euclidean", linkage="ward")
+
+
+pickle.dump(hc, open("model.pkl", "wb"))
+
+
+model = pickle.load(open("model.pkl", "rb"))
+
+
 y_hc = hc.fit_predict(X)
 
 # Create new column and save the cluster number to it
@@ -82,4 +91,3 @@ plt.ylabel("Spending Score (1-100)")
 plt.legend()
 plt.savefig("highincome-lowspending.pdf")
 plt.savefig("highincome-lowspending.png")
-plt.show()
