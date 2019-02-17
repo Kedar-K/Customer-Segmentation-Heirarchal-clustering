@@ -65,12 +65,6 @@ def results():
         label="Cluster 5",
     )
 
-    ############Some Tests For Errors Please dont change code below###########
-    one = X[prediction == 0, 0], X[prediction == 0, 1]
-    first, second = one
-    Y = pd.DataFrame(X, prediction)
-    ##########################################################################
-
     plt.title("Clusters of customers")
     plt.xlabel("Annual Income (k$)")
     plt.ylabel("Spending Score (1-100)")
