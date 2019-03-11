@@ -1,0 +1,24 @@
+CustomerID,Genre,Age,Annual Income (k$),Spending Score (1-100),cluster_no
+1,Male,19,15,39,4
+3,Female,20,16,6,4
+5,Female,31,17,40,4
+7,Female,35,18,6,4
+9,Male,64,19,3,4
+11,Male,67,19,14,4
+13,Female,58,20,15,4
+15,Male,37,20,13,4
+17,Female,35,21,35,4
+19,Male,52,23,29,4
+21,Male,35,24,35,4
+23,Female,46,25,5,4
+25,Female,54,28,14,4
+27,Female,45,28,32,4
+29,Female,40,29,31,4
+31,Male,60,30,4,4
+33,Male,53,33,4,4
+35,Female,49,33,14,4
+37,Female,42,34,17,4
+39,Female,36,37,26,4
+41,Female,65,38,35,4
+43,Male,48,39,36,4
+45,Female,49,39,28,4
