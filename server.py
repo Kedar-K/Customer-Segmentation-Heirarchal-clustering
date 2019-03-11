@@ -30,11 +30,86 @@ def results():
     file so dont modify that
     """
     highIncomeLowSpending = new_X.loc[new_X["cluster"] == 0].values
+    cluster2 = new_X.loc[new_X["cluster"] == 1].values
+    cluster3 = new_X.loc[new_X["cluster"] == 2].values
+    cluster4 = new_X.loc[new_X["cluster"] == 3].values
+    cluster5 = new_X.loc[new_X["cluster"] == 4].values
 
     # Convert it into csv file
-    with open("hILS.csv", "w", newline="") as fp:
+    with open("outputs/hILS.csv", "w", newline="") as fp:
         a = csv.writer(fp, delimiter=",")
+        a.writerow(
+            [
+                "CustomerID",
+                "Genre",
+                "Age",
+                "Annual Income (k$)",
+                "Spending Score (1-100)",
+                "cluster_no",
+            ]
+        )
         a.writerows(highIncomeLowSpending)
+        # a.writerow(highIncomeLowSpending[:-1])
+
+    with open("outputs/cluster2.csv", "w", newline="") as fp:
+        a = csv.writer(fp, delimiter=",")
+        a = csv.writer(fp, delimiter=",")
+        a.writerow(
+            [
+                "CustomerID",
+                "Genre",
+                "Age",
+                "Annual Income (k$)",
+                "Spending Score (1-100)",
+                "cluster_no",
+            ]
+        )
+        a.writerows(cluster2)
+
+    with open("outputs/cluster3.csv", "w", newline="") as fp:
+        a = csv.writer(fp, delimiter=",")
+        a = csv.writer(fp, delimiter=",")
+        a.writerow(
+            [
+                "CustomerID",
+                "Genre",
+                "Age",
+                "Annual Income (k$)",
+                "Spending Score (1-100)",
+                "cluster_no",
+            ]
+        )
+        a.writerows(cluster3)
+
+    with open("outputs/cluster4.csv", "w", newline="") as fp:
+        a = csv.writer(fp, delimiter=",")
+        a = csv.writer(fp, delimiter=",")
+        a.writerow(
+            [
+                "CustomerID",
+                "Genre",
+                "Age",
+                "Annual Income (k$)",
+                "Spending Score (1-100)",
+                "cluster_no",
+            ]
+        )
+        a.writerows(cluster4)
+
+    with open("outputs/cluster5.csv", "w", newline="") as fp:
+        a = csv.writer(fp, delimiter=",")
+        a = csv.writer(fp, delimiter=",")
+        a.writerow(
+            [
+                "CustomerID",
+                "Genre",
+                "Age",
+                "Annual Income (k$)",
+                "Spending Score (1-100)",
+                "cluster_no",
+            ]
+        )
+        a.writerows(cluster5)
 
     # Visualising the clusters
     plt.scatter(
@@ -69,8 +144,8 @@ def results():
     plt.xlabel("Annual Income (k$)")
     plt.ylabel("Spending Score (1-100)")
     plt.legend()
-    plt.savefig("highincome-lowspending.pdf")
-    plt.savefig("highincome-lowspending.png")
+    plt.savefig("outputs/highincome-lowspending.pdf")
+    plt.savefig("outputs/highincome-lowspending.png")
     return render_template("/templates/latest_results.html")
 
 
