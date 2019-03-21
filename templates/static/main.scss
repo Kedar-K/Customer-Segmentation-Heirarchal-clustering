@@ -1,0 +1,17 @@
+$josefin: 'Josefin Sans',
+sans-serif;
+
+$orange: #ef6c00;
+
+body {
+    margin: 0px;
+    font-family: $josefin;
+    background-color: $orange;
+}
+
+.row {
+    .left {
+        background-color: $orange;
+        margin: 50px;
+    }
+}
