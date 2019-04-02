@@ -1,4 +1,16 @@
-from flask import Flask, render_template
+from flask import (
+    Flask,
+    render_template,
+    flash,
+    redirect,
+    url_for,
+    session,
+    request,
+    logging,
+)
+from flask_mysqldb import MySQL
+from wtforms import Form, StringField, TextAreaField, PasswordField, validators
+from passlib.hash import sha256_crypt
 import pandas as pd
 import pickle
 import copy
@@ -15,7 +27,26 @@ new_X = copy.copy(dataset)
 
 @app.route("/")
 def hello():
-    return render_template("index.html")
+    return render_template("home.html")
+
+
+@app.route("/use")
+def how():
+    return render_template("how.html")
+
+
+# user login
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
+
+        cur = mysql.connection.cursor()
+
+        result = cur.execute("SELECT * FROM CLUSTERING WHERE username = %s", [username])
+
+    return render_template("/login.html")
 
 
 @app.route("/templates/latest_results")
