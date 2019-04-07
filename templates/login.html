@@ -1,0 +1,31 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<section style="margin-top:50px;" class="jumbotron text-center">
+    <div class="container">
+        <form class="form-signin">
+            <div class="text-center mb-4">
+                <h1 class="h3 mb-3 font-weight-normal">Sign In</h1>
+                <p>Enter the password username and password for admin</p>
+            </div>
+            <center>
+
+                <form action="" method="POST">
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input type="text" name="username" class="form-control" value={{request.form.username}}>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" name="password" class="form-control" value={{request.form.password}}>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+
+
+            </center>
+
+        </form>
+    </div>
+</section>
+{% endblock %}
