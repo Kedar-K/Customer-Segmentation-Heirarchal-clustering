@@ -24,6 +24,7 @@ from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 
+
 # Configuration of MySQL
 app.config["MYSQL_HOST"] = "localhost"
 app.config["MYSQL_USER"] = "root"
@@ -47,6 +48,11 @@ def hello():
 @app.route("/use")
 def how():
     return render_template("how.html")
+
+
+@app.route("/prev")
+def prev():
+    return render_template("prev.html")
 
 
 # user login
@@ -219,10 +225,12 @@ def upload_files():
         plt.legend()
         plt.savefig("outputs/highincome-lowspending.pdf")
         plt.savefig("outputs/highincome-lowspending.png")
+        plt.savefig("static/highincome-lowspending.png")
         # return render_template("/templates/latest_results.html")
         return render_template("/results.html")
 
-#For debugging porpouses dont change it
+
+# For debugging porpouses dont change it
 '''
 @app.route("/templates/latest_results")
 def results():

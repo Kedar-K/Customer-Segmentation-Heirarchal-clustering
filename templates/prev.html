@@ -1,0 +1,40 @@
+    {% extends 'layout.html' %}
+
+    {% block body %}
+    <section style="margin-top: 50px;" class="jumbotron text-left">
+        <div class="container">
+            <h1 class="jumbotron-heading">Previous results</h1>
+            <img src="../static/highincome-lowspending.png"><br>
+            Download image in
+            <ul>
+                <li>
+                    <a href="../outputs/highincome-lowspending.pdf" download="">pdf</a>
+                </li>
+                <li>
+                    <a href="../outputs/highincome-lowspending.png">png</a>
+                </li>
+            </ul>
+
+            <h3>Customer files</h3>
+            <ul>
+                <li>
+                    <a href="../outputs/hILS.csv" download>highincome-lowspending</a>
+                </li>
+                <li>
+                    <a href="../outputs/cluster2.csv" download="">Cluster 2</a>
+                </li>
+                <li>
+                    <a href="../outputs/cluster3.csv" download="">Cluster 3</a>
+                </li>
+                <li>
+                    <a href="../outputs/cluster4.csv" download="">Cluster 4</a>
+                </li>
+                <li>
+                    <a href="../outputs/cluster5.csv" download=""> Cluster 5</a>
+                </li>
+            </ul>
+            <p><b>Note:</b> <i>These are the results of previous customers. This will be lost if the application is used
+                    again. So, download the files for tracking progress.</i></p>
+        </div>
+    </section>
+    {% endblock %}
