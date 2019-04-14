@@ -1,8 +1,15 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-<form action="http://localhost:5000/uploader" method="POST" enctype="multipart/form-data">
-    <input type="file" name="file" />
-    <input type="submit" />
-</form>
+<section style="margin-top:150px;" class="jumbotron text-center">
+    <div class="container">
+        <h1 class="jumbotron-heading">Upload the csv file</h1>
+        <p>Please Check out the instructions before uploading the file<a href="/use"> here</a></p>
+
+        <form action="http://localhost:5000/uploader" method="POST" enctype="multipart/form-data">
+            <input type="file" name="file" />
+            <input type="submit" />
+        </form>
+    </div>
+</section>
 {% endblock %}
