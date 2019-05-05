@@ -34,11 +34,6 @@ app.config["MYSQL_CURSORCLASS"] = "DictCursor"
 # MYSQL init
 mysql = MySQL(app)
 
-dataset = pd.read_csv("Mall_Customers.csv")
-X = dataset.iloc[:, [3, 4]].values
-model = pickle.load(open("model.pkl", "rb"))
-new_X = copy.copy(dataset)
-
 
 @app.route("/")
 def hello():
@@ -87,6 +82,10 @@ def upload_files():
     if request.method == "POST":
         f = request.files["file"]
         f.save(secure_filename(f.filename))
+        dataset = pd.read_csv("Mall_Customers.csv")
+        X = dataset.iloc[:, [3, 4]].values
+        model = pickle.load(open("model.pkl", "rb"))
+        new_X = copy.copy(dataset)
         prediction = model.fit_predict(X)
         # Create new column and save the cluster number to it
         new_X["cluster"] = prediction
@@ -103,7 +102,7 @@ def upload_files():
         cluster5 = new_X.loc[new_X["cluster"] == 4].values
 
         # Convert it into csv file
-        with open("outputs/hILS.csv", "w", newline="") as fp:
+        with open("static/hILS.csv", "w", newline="") as fp:
             a = csv.writer(fp, delimiter=",")
             a.writerow(
                 [
@@ -118,7 +117,7 @@ def upload_files():
             a.writerows(highIncomeLowSpending)
             # a.writerow(highIncomeLowSpending[:-1])
 
-        with open("outputs/cluster2.csv", "w", newline="") as fp:
+        with open("static/cluster2.csv", "w", newline="") as fp:
             a = csv.writer(fp, delimiter=",")
             a = csv.writer(fp, delimiter=",")
             a.writerow(
@@ -133,7 +132,7 @@ def upload_files():
             )
             a.writerows(cluster2)
 
-        with open("outputs/cluster3.csv", "w", newline="") as fp:
+        with open("static/cluster3.csv", "w", newline="") as fp:
             a = csv.writer(fp, delimiter=",")
             a = csv.writer(fp, delimiter=",")
             a.writerow(
@@ -148,7 +147,7 @@ def upload_files():
             )
             a.writerows(cluster3)
 
-        with open("outputs/cluster4.csv", "w", newline="") as fp:
+        with open("static/cluster4.csv", "w", newline="") as fp:
             a = csv.writer(fp, delimiter=",")
             a = csv.writer(fp, delimiter=",")
             a.writerow(
@@ -163,7 +162,7 @@ def upload_files():
             )
             a.writerows(cluster4)
 
-        with open("outputs/cluster5.csv", "w", newline="") as fp:
+        with open("static/cluster5.csv", "w", newline="") as fp:
             a = csv.writer(fp, delimiter=",")
             a = csv.writer(fp, delimiter=",")
             a.writerow(
@@ -223,8 +222,8 @@ def upload_files():
         plt.xlabel("Annual Income (k$)")
         plt.ylabel("Spending Score (1-100)")
         plt.legend()
-        plt.savefig("outputs/highincome-lowspending.pdf")
-        plt.savefig("outputs/highincome-lowspending.png")
+        plt.savefig("static/highincome-lowspending.pdf")
+        plt.savefig("static/highincome-lowspending.png")
         plt.savefig("static/highincome-lowspending.png")
         # return render_template("/templates/latest_results.html")
         return render_template("/results.html")
@@ -250,7 +249,7 @@ def results():
     cluster5 = new_X.loc[new_X["cluster"] == 4].values
 
     # Convert it into csv file
-    with open("outputs/hILS.csv", "w", newline="") as fp:
+    with open("static/hILS.csv", "w", newline="") as fp:
         a = csv.writer(fp, delimiter=",")
         a.writerow(
             [
@@ -265,7 +264,7 @@ def results():
         a.writerows(highIncomeLowSpending)
         # a.writerow(highIncomeLowSpending[:-1])
 
-    with open("outputs/cluster2.csv", "w", newline="") as fp:
+    with open("static/cluster2.csv", "w", newline="") as fp:
         a = csv.writer(fp, delimiter=",")
         a = csv.writer(fp, delimiter=",")
         a.writerow(
@@ -280,7 +279,7 @@ def results():
         )
         a.writerows(cluster2)
 
-    with open("outputs/cluster3.csv", "w", newline="") as fp:
+    with open("static/cluster3.csv", "w", newline="") as fp:
         a = csv.writer(fp, delimiter=",")
         a = csv.writer(fp, delimiter=",")
         a.writerow(
@@ -295,7 +294,7 @@ def results():
         )
         a.writerows(cluster3)
 
-    with open("outputs/cluster4.csv", "w", newline="") as fp:
+    with open("static/cluster4.csv", "w", newline="") as fp:
         a = csv.writer(fp, delimiter=",")
         a = csv.writer(fp, delimiter=",")
         a.writerow(
@@ -310,7 +309,7 @@ def results():
         )
         a.writerows(cluster4)
 
-    with open("outputs/cluster5.csv", "w", newline="") as fp:
+    with open("static/cluster5.csv", "w", newline="") as fp:
         a = csv.writer(fp, delimiter=",")
         a = csv.writer(fp, delimiter=",")
         a.writerow(
@@ -358,8 +357,8 @@ def results():
     plt.xlabel("Annual Income (k$)")
     plt.ylabel("Spending Score (1-100)")
     plt.legend()
-    plt.savefig("outputs/highincome-lowspending.pdf")
-    plt.savefig("outputs/highincome-lowspending.png")
+    plt.savefig("static/highincome-lowspending.pdf")
+    plt.savefig("static/highincome-lowspending.png")
     return render_template("/templates/latest_results.html")
 '''
 
