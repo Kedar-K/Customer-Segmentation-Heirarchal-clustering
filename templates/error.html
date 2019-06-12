@@ -1,0 +1,19 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<section style="margin-top:150px;" class="jumbotron text-center">
+    <div class="container">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+        <h1 style="color: red;">{{ message }}</h1>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+        <h4>Please Check out the instructions before uploading the file<a href="/use"> here</a></h4>
+        <h4>Check the previous results <a href="/prev">here</a></h4>
+
+
+    </div>
+</section>
+{% endblock %}

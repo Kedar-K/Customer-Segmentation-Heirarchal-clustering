@@ -23,7 +23,7 @@ from werkzeug.utils import secure_filename
 
 
 app = Flask(__name__)
-
+app.secret_key = "dont tell"
 """
 # Configuration of MySQL
 app.config["MYSQL_HOST"] = "localhost"
@@ -84,157 +84,162 @@ def upload_file():
 def upload_files():
     if request.method == "POST":
         f = request.files["file"]
-        f.save(secure_filename(f.filename))
-        dataset = pd.read_csv("Mall_Customers.csv")
-        X = dataset.iloc[:, [3, 4]].values
-        """
-        imputer = Imputer(missing_values="NaN", strategy="mean", axis=0)
-        imputer = imputer.fit(X[:, 3:4])
-        X[:, 3:4] = imputer.transform(X[:, 3:4])
-        """
-        model = pickle.load(open("model.pkl", "rb"))
-        new_X = copy.copy(dataset)
-        prediction = model.fit_predict(X)
-        # Create new column and save the cluster number to it
-        new_X["cluster"] = prediction
+        if f.filename != "Mall_Customers.csv":
+            flash("wrong file")
+            return render_template("/error.html")
 
-        # Get Hign Income Low Spending in seperate list
-        """
-        .values is necessary for porpouse of Converting it ti the csv 
-        file so dont modify that
-        """
-        highIncomeLowSpending = new_X.loc[new_X["cluster"] == 0].values
-        cluster2 = new_X.loc[new_X["cluster"] == 1].values
-        cluster3 = new_X.loc[new_X["cluster"] == 2].values
-        cluster4 = new_X.loc[new_X["cluster"] == 3].values
-        cluster5 = new_X.loc[new_X["cluster"] == 4].values
+        else:
+            f.save(secure_filename(f.filename))
+            dataset = pd.read_csv("Mall_Customers.csv")
+            X = dataset.iloc[:, [3, 4]].values
+            """
+            imputer = Imputer(missing_values="NaN", strategy="mean", axis=0)
+            imputer = imputer.fit(X[:, 3:4])
+            X[:, 3:4] = imputer.transform(X[:, 3:4])
+            """
+            model = pickle.load(open("model.pkl", "rb"))
+            new_X = copy.copy(dataset)
+            prediction = model.fit_predict(X)
+            # Create new column and save the cluster number to it
+            new_X["cluster"] = prediction
 
-        # Convert it into csv file
-        with open("static/hILS.csv", "w", newline="") as fp:
-            a = csv.writer(fp, delimiter=",")
-            a.writerow(
-                [
-                    "CustomerID",
-                    "Genre",
-                    "Age",
-                    "Annual Income (k$)",
-                    "Spending Score (1-100)",
-                    "cluster_no",
-                ]
+            # Get Hign Income Low Spending in seperate list
+            """
+            .values is necessary for porpouse of Converting it ti the csv 
+            file so dont modify that
+            """
+            highIncomeLowSpending = new_X.loc[new_X["cluster"] == 0].values
+            cluster2 = new_X.loc[new_X["cluster"] == 1].values
+            cluster3 = new_X.loc[new_X["cluster"] == 2].values
+            cluster4 = new_X.loc[new_X["cluster"] == 3].values
+            cluster5 = new_X.loc[new_X["cluster"] == 4].values
+
+            # Convert it into csv file
+            with open("static/hILS.csv", "w", newline="") as fp:
+                a = csv.writer(fp, delimiter=",")
+                a.writerow(
+                    [
+                        "CustomerID",
+                        "Genre",
+                        "Age",
+                        "Annual Income (k$)",
+                        "Spending Score (1-100)",
+                        "cluster_no",
+                    ]
+                )
+                a.writerows(highIncomeLowSpending)
+                # a.writerow(highIncomeLowSpending[:-1])
+
+            with open("static/cluster2.csv", "w", newline="") as fp:
+                a = csv.writer(fp, delimiter=",")
+                a = csv.writer(fp, delimiter=",")
+                a.writerow(
+                    [
+                        "CustomerID",
+                        "Genre",
+                        "Age",
+                        "Annual Income (k$)",
+                        "Spending Score (1-100)",
+                        "cluster_no",
+                    ]
+                )
+                a.writerows(cluster2)
+
+            with open("static/cluster3.csv", "w", newline="") as fp:
+                a = csv.writer(fp, delimiter=",")
+                a = csv.writer(fp, delimiter=",")
+                a.writerow(
+                    [
+                        "CustomerID",
+                        "Genre",
+                        "Age",
+                        "Annual Income (k$)",
+                        "Spending Score (1-100)",
+                        "cluster_no",
+                    ]
+                )
+                a.writerows(cluster3)
+
+            with open("static/cluster4.csv", "w", newline="") as fp:
+                a = csv.writer(fp, delimiter=",")
+                a = csv.writer(fp, delimiter=",")
+                a.writerow(
+                    [
+                        "CustomerID",
+                        "Genre",
+                        "Age",
+                        "Annual Income (k$)",
+                        "Spending Score (1-100)",
+                        "cluster_no",
+                    ]
+                )
+                a.writerows(cluster4)
+
+            with open("static/cluster5.csv", "w", newline="") as fp:
+                a = csv.writer(fp, delimiter=",")
+                a = csv.writer(fp, delimiter=",")
+                a.writerow(
+                    [
+                        "CustomerID",
+                        "Genre",
+                        "Age",
+                        "Annual Income (k$)",
+                        "Spending Score (1-100)",
+                        "cluster_no",
+                    ]
+                )
+                a.writerows(cluster5)
+
+            # Visualising the clusters
+            plt.scatter(
+                X[prediction == 0, 0],
+                X[prediction == 0, 1],
+                s=100,
+                c="red",
+                label="Cluster 1",
             )
-            a.writerows(highIncomeLowSpending)
-            # a.writerow(highIncomeLowSpending[:-1])
 
-        with open("static/cluster2.csv", "w", newline="") as fp:
-            a = csv.writer(fp, delimiter=",")
-            a = csv.writer(fp, delimiter=",")
-            a.writerow(
-                [
-                    "CustomerID",
-                    "Genre",
-                    "Age",
-                    "Annual Income (k$)",
-                    "Spending Score (1-100)",
-                    "cluster_no",
-                ]
+            plt.scatter(
+                X[prediction == 1, 0],
+                X[prediction == 1, 1],
+                s=100,
+                c="blue",
+                label="Cluster 2",
             )
-            a.writerows(cluster2)
 
-        with open("static/cluster3.csv", "w", newline="") as fp:
-            a = csv.writer(fp, delimiter=",")
-            a = csv.writer(fp, delimiter=",")
-            a.writerow(
-                [
-                    "CustomerID",
-                    "Genre",
-                    "Age",
-                    "Annual Income (k$)",
-                    "Spending Score (1-100)",
-                    "cluster_no",
-                ]
+            plt.scatter(
+                X[prediction == 2, 0],
+                X[prediction == 2, 1],
+                s=100,
+                c="green",
+                label="Cluster 3",
             )
-            a.writerows(cluster3)
 
-        with open("static/cluster4.csv", "w", newline="") as fp:
-            a = csv.writer(fp, delimiter=",")
-            a = csv.writer(fp, delimiter=",")
-            a.writerow(
-                [
-                    "CustomerID",
-                    "Genre",
-                    "Age",
-                    "Annual Income (k$)",
-                    "Spending Score (1-100)",
-                    "cluster_no",
-                ]
+            plt.scatter(
+                X[prediction == 3, 0],
+                X[prediction == 3, 1],
+                s=100,
+                c="cyan",
+                label="Cluster 4",
             )
-            a.writerows(cluster4)
 
-        with open("static/cluster5.csv", "w", newline="") as fp:
-            a = csv.writer(fp, delimiter=",")
-            a = csv.writer(fp, delimiter=",")
-            a.writerow(
-                [
-                    "CustomerID",
-                    "Genre",
-                    "Age",
-                    "Annual Income (k$)",
-                    "Spending Score (1-100)",
-                    "cluster_no",
-                ]
+            plt.scatter(
+                X[prediction == 4, 0],
+                X[prediction == 4, 1],
+                s=100,
+                c="magenta",
+                label="Cluster 5",
             )
-            a.writerows(cluster5)
 
-        # Visualising the clusters
-        plt.scatter(
-            X[prediction == 0, 0],
-            X[prediction == 0, 1],
-            s=100,
-            c="red",
-            label="Cluster 1",
-        )
-
-        plt.scatter(
-            X[prediction == 1, 0],
-            X[prediction == 1, 1],
-            s=100,
-            c="blue",
-            label="Cluster 2",
-        )
-
-        plt.scatter(
-            X[prediction == 2, 0],
-            X[prediction == 2, 1],
-            s=100,
-            c="green",
-            label="Cluster 3",
-        )
-
-        plt.scatter(
-            X[prediction == 3, 0],
-            X[prediction == 3, 1],
-            s=100,
-            c="cyan",
-            label="Cluster 4",
-        )
-
-        plt.scatter(
-            X[prediction == 4, 0],
-            X[prediction == 4, 1],
-            s=100,
-            c="magenta",
-            label="Cluster 5",
-        )
-
-        plt.title("Clusters of customers")
-        plt.xlabel("Annual Income (k$)")
-        plt.ylabel("Spending Score (1-100)")
-        plt.legend()
-        plt.savefig("static/highincome-lowspending.pdf")
-        plt.savefig("static/highincome-lowspending.png")
-        plt.savefig("static/highincome-lowspending.png")
-        # return render_template("/templates/latest_results.html")
-        return render_template("/results.html")
+            plt.title("Clusters of customers")
+            plt.xlabel("Annual Income (k$)")
+            plt.ylabel("Spending Score (1-100)")
+            plt.legend()
+            plt.savefig("static/highincome-lowspending.pdf")
+            plt.savefig("static/highincome-lowspending.png")
+            plt.savefig("static/highincome-lowspending.png")
+            # return render_template("/templates/latest_results.html")
+            return render_template("/results.html")
 
 
 # For debugging porpouses dont change it
