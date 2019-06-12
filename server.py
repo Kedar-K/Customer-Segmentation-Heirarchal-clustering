@@ -8,7 +8,7 @@ from flask import (
     request,
     logging,
 )
-
+from sklearn.preprocessing import Imputer
 import sys
 import os
 from flask_mysqldb import MySQL
@@ -24,7 +24,7 @@ from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 
-
+"""
 # Configuration of MySQL
 app.config["MYSQL_HOST"] = "localhost"
 app.config["MYSQL_USER"] = "root"
@@ -33,6 +33,7 @@ app.config["MYSQL_DB"] = "clustering"
 app.config["MYSQL_CURSORCLASS"] = "DictCursor"
 # MYSQL init
 mysql = MySQL(app)
+"""
 
 
 @app.route("/")
@@ -50,6 +51,7 @@ def prev():
     return render_template("prev.html")
 
 
+"""
 # user login
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -70,6 +72,7 @@ def login():
         else:
             flash("0")
     return render_template("login.html")
+"""
 
 
 @app.route("/upload")
@@ -84,6 +87,11 @@ def upload_files():
         f.save(secure_filename(f.filename))
         dataset = pd.read_csv("Mall_Customers.csv")
         X = dataset.iloc[:, [3, 4]].values
+        """
+        imputer = Imputer(missing_values="NaN", strategy="mean", axis=0)
+        imputer = imputer.fit(X[:, 3:4])
+        X[:, 3:4] = imputer.transform(X[:, 3:4])
+        """
         model = pickle.load(open("model.pkl", "rb"))
         new_X = copy.copy(dataset)
         prediction = model.fit_predict(X)
